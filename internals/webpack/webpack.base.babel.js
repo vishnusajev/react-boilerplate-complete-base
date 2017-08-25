@@ -4,6 +4,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = (options) => ({
   entry: options.entry,
@@ -26,6 +27,31 @@ module.exports = (options) => ({
       test: /\.css$/,
       include: /node_modules/,
       loaders: ['style-loader', 'css-loader'],
+    }, {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract({
+        fallbackLoader: 'style-loader',
+        loader: [
+          {
+            loader: 'css-loader',
+            query: {
+              importLoaders: 2,
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            query: {
+              outputStyle: 'expanded',
+              sourceMap: true,
+              sourceMapContents: true,
+              includePaths: [
+                path.resolve('node_modules', 'foundation-sites', 'scss'),
+              ],
+            },
+          },
+        ],
+      }),
     }, {
       test: /\.(eot|svg|ttf|woff|woff2)$/,
       loader: 'file-loader',
@@ -75,6 +101,7 @@ module.exports = (options) => ({
       },
     }),
     new webpack.NamedModulesPlugin(),
+    new ExtractTextPlugin('bundle.css'),
   ]),
   resolve: {
     modules: ['app', 'node_modules'],

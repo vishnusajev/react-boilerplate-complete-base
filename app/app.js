@@ -15,7 +15,8 @@ import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
-import 'sanitize.css/sanitize.css';
+import FontFaceObserver from 'fontfaceobserver';
+import 'styles/app.scss';
 
 // Import root app
 import App from 'containers/App';
@@ -38,11 +39,17 @@ import configureStore from './store';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
-// Import CSS reset and Global Styles
-import './global-styles';
-
 // Import root routes
 import createRoutes from './routes';
+
+const sanObserver = new FontFaceObserver('Source Sans Pro', {});
+
+// When Sans is loaded, add a font-family using Sans to the body
+sanObserver.load().then(() => {
+  document.body.classList.add('fontLoaded');
+}, () => {
+  document.body.classList.remove('fontLoaded');
+});
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

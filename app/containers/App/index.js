@@ -12,6 +12,26 @@
  */
 
 import React from 'react';
+import Helmet from 'react-helmet';
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+injectTapEventPlugin();
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: '#CACACA',
+    accent1Color: '#E18156',
+  },
+  tabs: {
+    backgroundColor: '#00BB6E',
+    textColor: '#008A4F',
+    selectedTextColor: '#FFFFFF',
+  },
+});
+
 
 export default class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -20,9 +40,21 @@ export default class App extends React.PureComponent { // eslint-disable-line re
   };
 
   render() {
+    const { children } = this.props;
     return (
       <div>
-        {React.Children.toArray(this.props.children)}
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <div>
+            <Helmet
+              titleTemplate="%s"
+              defaultTitle="Project Name"
+              meta={[
+                { name: 'description', content: 'Project Name' },
+              ]}
+            />
+            {React.Children.toArray(children)}
+          </div>
+        </MuiThemeProvider>
       </div>
     );
   }
