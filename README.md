@@ -4,7 +4,7 @@
 3. Do `yarn`
 4. Run `npm run start`
 
-** Additional packages installed are
+## Additional packages installed are
 
 1. extract-text-webpack-plugin@2.1.2
 2. foundation-sites
